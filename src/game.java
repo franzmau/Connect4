@@ -22,6 +22,11 @@ public class game {
 			posx[i]=length-1;
 			//System.out.print("\n");
 		}
+		Board[5][3]=2;
+		this.setPosx(3);
+		Board[5][1]=2;
+		this.setPosx(1);
+		
 	
 	}
 	public boolean movePerson(int x){
@@ -87,6 +92,8 @@ public class game {
 			}
 			}
 		}
+		auxC=0;
+		auxP=0;
 		for(int j=wide-1;j>=0;j--){
 			for (int i=length-1; i>=0;i--){
 				if(Board[i][j]==1){
@@ -107,7 +114,33 @@ public class game {
 				}
 				}
 				
-			}	
+			}
+		auxC=0;
+		auxP=0;
+		for(int i=0;i<wide-3;i++){
+	        for(int j=0;j<length-3;j++){
+	        	
+	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
+	            	return player;
+	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
+	            	return cpu;
+	        	}
+	        
+		}
+	    //checks left diagonal win
+		for(int i=0;i<wide-3;i++){
+	        for(int j=0;j<length-3;j++){
+	        	
+	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
+	            	return player;
+	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
+	            	return cpu;
+	        	
+	        } 	
+		}
+		
+		
+		
 		return 0;
 	}
 }

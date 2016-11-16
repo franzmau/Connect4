@@ -67,14 +67,15 @@ public class main {
 		computer.setPosx(3);
 		computer.setPosx(3);
 		computer.setPosx(3);
-		int x=computer.poner(Board);
+		//int x=computer.poner(Board);
 		
 		
 		
 		//System.out.print("El mejor lugar para ponerlo es"+x );
 		
-		/*
+		
 		Scanner sc = new Scanner(System.in);
+		
 	    while(Game.game_finished()==0){
 	    	do{
 	    	System.out.print("muevele\n");
@@ -85,7 +86,7 @@ public class main {
 	    	Game.print();
 	    	
 	    }
-		*/
+		
 		
 			
 	}

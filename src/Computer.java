@@ -308,6 +308,10 @@ public class Computer {
 		posx[i]-=1;
 	}
 	
+	public int Posx(){
+		return this.Posx();
+	}
+	
 }
 
 
