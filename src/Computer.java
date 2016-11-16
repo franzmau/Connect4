@@ -16,7 +16,6 @@ public class Computer {
 		for (int i=0; i< wide;i++){
 			posx[i]=length-1;
 		}
-	
 	}
 	
 	public int game_finished(int Board[][]){
