@@ -49,7 +49,7 @@ public class Board {
 	}
 	
 	public boolean addChip(int player, int column){
-		if(column < 0 && column >= 7){
+		if(column < 0 || column >= 7){
 			return false;
 		}
 		for(int i = (this.board.length - 1); i >= 0; i--){
