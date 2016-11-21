@@ -63,7 +63,7 @@ public class Board {
 	
 	public boolean gameFinished(){
 		int length = this.board.length;
-		int wide = this.board.length;
+		int wide = this.board[0].length;
 		for (int i=length-1; i>=0;i--){
 			for(int j=wide-1;j>=0;j--){
 				if(this.board[i][j]==0){
@@ -73,7 +73,6 @@ public class Board {
 		}
 		return true;
 	}
-	
 	
 	
 	public int getCurrentScore(){
