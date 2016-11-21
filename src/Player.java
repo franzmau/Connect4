@@ -20,7 +20,7 @@ public class Player {
 			return reader.nextInt();
 
 		}else{
-			return getComputedMove(board, true, 10)[0];
+			return getComputedMove(board, true, 2)[0];
 		}
 	}
 	
