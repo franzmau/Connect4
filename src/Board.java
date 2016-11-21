@@ -34,6 +34,11 @@ public class Board {
 		this.printBoard();
 	}
 	
+	public Board(Board b){
+		board = new int[6][7];
+		this.board = b.getBoard().clone();
+	}
+	
 	public boolean addChip(int player, int column){
 		for(int i = (this.board.length - 1); i >= 0; i--){
 			if(board[i][column] == 0){
@@ -44,7 +49,22 @@ public class Board {
 		return false;
 	}
 	
-	public int gameFinished(){
+	public boolean gameFinished(){
+		int length = this.board.length;
+		int wide = this.board.length;
+		for (int i=length-1; i>=0;i--){
+			for(int j=wide-1;j>=0;j--){
+				if(this.board[i][j]==0){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	
+	
+	public int getCurrentScore(){
 		int[][] Board = this.board;
 		int length = Board.length;
 		int wide = Board[0].length;

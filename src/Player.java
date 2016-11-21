@@ -20,15 +20,52 @@ public class Player {
 			return reader.nextInt();
 
 		}else{
-			return getComputedMove(board);
+			return getComputedMove(board, true, 10)[0];
 		}
 	}
 	
-	private int getComputedMove(Board board){
-		if(board.gameFinished() != 0){
-			return 0;
+	private int [] getComputedMove(Board board, Boolean isPlaying, int depth){
+		int [] output = new int [2];
+		score = board.getCurrentScore();
+		if(board.gameFinished() || depth <= 0){
+			output[0] = 0;
+			output[1] = score;
+			return output;
 		}
-		return 0;
+		
+		if(isPlaying){
+			output[0] = 0;
+			output[1] = -9999;
+		}else{
+			output[0] = 0;
+			output[1] = 9999;
+		}
+		
+		int player = isPlaying ? 1: 2;
+		
+		for(int i = 0; i < 7 ; i++){
+			Board b = new Board(board);
+			
+			if(b.addChip(player, i)){
+				int [] next_move = getComputedMove(b, !isPlaying, depth - 1); // Recursive calling
+
+	            // Evaluate new move
+				if(isPlaying){
+					if (output[0] == 0 || next_move[1] > output[1]) {
+		            	output[0] = i;
+		            	output[1] = next_move[1];
+		            }
+				}else{
+					if (output[0] == 0 || next_move[1] < output[1]) {
+		            	output[0] = i;
+		            	output[1] = next_move[1];
+		            }
+				}
+	            
+			}
+		}
+		
+		return output;
 	}
 	
 }

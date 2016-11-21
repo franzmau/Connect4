@@ -38,7 +38,7 @@ public class Game {
 			}
 			isPlayer1Turn = !isPlayer1Turn;
 			board.printBoard();
-			if(this.board.gameFinished() != 0){
+			if(this.board.gameFinished()){
 				this.playing = false;
 			}
 		}
