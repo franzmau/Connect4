@@ -1,5 +1,5 @@
 
-public class game {
+public class game2 {
 
 	int Board[][];
 	final int length=6;
@@ -8,7 +8,7 @@ public class game {
 	final int player=1;
 	int posx [];
 	
-	public game(){
+	public game2(){
 		Board= new int [length][wide];
 		posx=new int[7];
 	}
@@ -117,6 +117,7 @@ public class game {
 			}
 		auxC=0;
 		auxP=0;
+		
 		for(int i=0;i<wide-3;i++){
 	        for(int j=0;j<length-3;j++){
 	        	

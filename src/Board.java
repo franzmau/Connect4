@@ -97,12 +97,15 @@ public class Board {
 				auxP=0;
 			}
 			if(auxC==4){
+				System.out.println("gano cpu en ");
 				return cpu;
 			}
 			if(auxP==4){
 				return player;
 			}
 			}
+			auxC=0;
+			auxP=0;
 		}
 		auxC=0;
 		auxP=0;
@@ -125,6 +128,8 @@ public class Board {
 					return player;
 				}
 				}
+			auxC=0;
+			auxP=0;
 				
 			}
 		

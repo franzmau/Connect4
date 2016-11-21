@@ -41,6 +41,8 @@ public class Computer {
 			}
 			}
 		}
+		auxC=0;
+		auxP=0;
 		for(int j=wide-1;j>=0;j--){
 			for (int i=length-1; i>=0;i--){
 				if(Board[i][j]==1){
