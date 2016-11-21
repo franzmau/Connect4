@@ -2,6 +2,8 @@
 public class Board {
 	
 	private int board[][];
+	public final int width = 7;
+	public final int height = 6;
 	
 	public void printBoard(){
 		System.out.println();
