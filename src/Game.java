@@ -41,6 +41,7 @@ public class Game {
 			if(this.board.gameFinished()){
 				this.playing = false;
 			}
+			board.printBoard();
 		}
 	}
 	

@@ -16,7 +16,16 @@ public class Board {
 	}
 	
 	public int[][] getBoard(){
-		return this.board;
+		int [][] myInt = new int[this.board.length][];
+		for(int i = 0; i < this.board.length; i++)
+		{
+		  int[] aMatrix = this.board[i];
+		  int   aLength = aMatrix.length;
+		  myInt[i] = new int[aLength];
+		  System.arraycopy(aMatrix, 0, myInt[i], 0, aLength);
+		}
+		
+		return myInt;
 	}
 	
 	public void initBoard(){
@@ -65,7 +74,7 @@ public class Board {
 	
 	
 	public int getCurrentScore(){
-		int[][] Board = this.board;
+		int[][] Board = this.getBoard();
 		int length = Board.length;
 		int wide = Board[0].length;
 		int cpu = 2;
@@ -139,8 +148,6 @@ public class Board {
 	        } 	
 		}*/
 		
-		
-		
-		return 0;
+				return 0;
 	}
 }
