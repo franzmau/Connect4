@@ -38,11 +38,13 @@ public class Game {
 			}
 			isPlayer1Turn = !isPlayer1Turn;
 			board.printBoard();
-			if(this.board.gameFinished()){
+			if(this.board.gameFinished() || Math.abs(this.board.getCurrentScore()) >= (100)){
 				this.playing = false;
 			}
 			board.printBoard();
 		}
+		System.out.println("GAME FINISHED");
+		
 	}
 	
 }

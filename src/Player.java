@@ -20,13 +20,14 @@ public class Player {
 			return reader.nextInt();
 
 		}else{
-			return getComputedMove(board, true, 2)[0];
+			return getComputedMove(board, true, 5)[0];
 		}
 	}
 	
 	private int [] getComputedMove(Board board, Boolean isPlaying, int depth){
 		int [] output = new int [2];
-		score = board.getCurrentScore();
+		int offset = isPlaying ? depth : -depth;
+		score = board.getCurrentScore() + offset;
 		if(board.gameFinished() || depth <= 0){
 			output[0] = 0;
 			output[1] = score;

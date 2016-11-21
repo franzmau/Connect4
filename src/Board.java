@@ -80,8 +80,8 @@ public class Board {
 		int[][] Board = this.getBoard();
 		int length = Board.length;
 		int wide = Board[0].length;
-		int cpu = 2;
-		int player = 1;
+		int cpu = 100;
+		int player = -100;
 		int auxP=0;
 		int auxC=0;
 		for (int i=length-1; i>=0;i--){
@@ -150,7 +150,6 @@ public class Board {
 	        	
 	        } 	
 		}*/
-		
-				return 0;
+		return 0;
 	}
 }
