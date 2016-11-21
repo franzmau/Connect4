@@ -38,9 +38,15 @@ public class Game {
 			}
 			isPlayer1Turn = !isPlayer1Turn;
 			board.printBoard();
-			if(this.board.gameFinished() || Math.abs(this.board.getCurrentScore()) >= (100)){
+			if(this.board.gameFinished() ){
 				this.playing = false;
+				System.out.println("YA alguien gano");
 			}
+			if( Math.abs(this.board.getCurrentScore()) >= (100)){
+				this.playing = false;
+				System.out.println("score ya es mayor a 100");
+			}
+			
 			board.printBoard();
 		}
 		System.out.println("GAME FINISHED");

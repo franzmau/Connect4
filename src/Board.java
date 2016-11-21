@@ -98,12 +98,15 @@ public class Board {
 				auxP=0;
 			}
 			if(auxC==4){
+				System.out.println("gano cpu en ");
 				return cpu;
 			}
 			if(auxP==4){
 				return player;
 			}
 			}
+			auxC=0;
+			auxP=0;
 		}
 		auxC=0;
 		auxP=0;
@@ -126,31 +129,45 @@ public class Board {
 					return player;
 				}
 				}
+			auxC=0;
+			auxP=0;
 				
 			}
 		
-		/*auxC=0;
+		auxC=0;
 		auxP=0;
-		for(int i=0;i<wide-3;i++){
-	        for(int j=0;j<length-3;j++){
+		for(int i=0;i<wide-1;i++){
+	        for(int j=0;j<length-1;j++){
+	        	
+	        	int j3=j+3;
+	        	int i3= i+3;
+	        	
+	        	if(i3<wide-1 && j3 <length-1){
+	        	
 	        	
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
 	            	return player;
 	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
 	            	return cpu;
 	        	}
+	        }
 	        
 		}
 	    //checks left diagonal win
-		for(int i=0;i<wide-3;i++){
-	        for(int j=4;j<length-4;j++){
+		for(int i=0;i<wide-1;i++){
+	        for(int j=0;j<length-1;j++){
+	        	int j3=j-3;
+	        	int i3= i+3;
+	        	
+	        	if(i3<wide-1 && j3 >0){
+	        	
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return player;
 	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return cpu;
-	        	
+	        	}
 	        } 	
-		}*/
+		}
 		return 0;
 	}
 }
