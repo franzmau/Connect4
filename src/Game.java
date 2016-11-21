@@ -31,10 +31,10 @@ public class Game {
 		while(playing){
 			if(isPlayer1Turn){
 				System.out.println("P1");
-				board.addChip(p1.id, p1.getMove(board));
+				while(!board.addChip(p1.id, p1.getMove(board)));
 			}else{
 				System.out.println("P2");
-				board.addChip(p2.id, p2.getMove(board));
+				while(!board.addChip(p2.id, p2.getMove(board)));
 			}
 			isPlayer1Turn = !isPlayer1Turn;
 			board.printBoard();
