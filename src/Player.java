@@ -5,6 +5,9 @@ public class Player {
 	private boolean isHuman;
 	private Scanner reader;
 	public final int id;
+	public final int MAX_DEPTH = 7;
+	public int count = 0;
+	public int iterations = 0;
 
 	
 	public Player(boolean isHuman, int id){
@@ -16,73 +19,58 @@ public class Player {
 	
 	
 	public int getMove(Board board){
+		System.out.println("Getting move...");
 		if(isHuman){
 			return reader.nextInt();
 
 		}else{
-			return getMaxMove(board, 6)[0];
+			iterations = 0;
+			int[] output =  minMax(board,true, this.MAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			System.out.println("Iterations: "+ this.iterations);
+			System.out.println("Column: "+  output[0]);
+			System.out.println("Score: "+ output[1]);
+			return output [0];
 		}
 	}
 	
-	private int [] getMaxMove(Board board, int depth){
+	private int[] minMax(Board board, Boolean isPlaying, int depth  ,int alpha, int beta) {
 		int [] output = new int [2];
-		int score = board.getCurrentScore();
-		if(board.gameFinished() || depth <= 0){
+		int score = board.getScore();
+		int currentPlayer =  isPlaying? 2 : 1;
+	      
+		if(board.isFinished(depth, score)){
 			output[0] = 0;
 			output[1] = score;
 			return output;
 		}
 		
-		output[0] = 0;
+		output[0] = -1;
 		output[1] = -9999;
 		
-		
-		for(int i = 0; i < 7 ; i++){
+		for(int i = 0; i < 7; i++){
 			Board b = new Board(board);
-			
-			if(b.addChip(2, i)){
-				int [] next_move = getMinMove(b, depth - 1); // Recursive calling
+			if(b.addChip(currentPlayer, i)){
+				this.iterations ++;
 
-	            // Evaluate new move
-				if (output[0] == 0 || next_move[1] > output[1]) {
-		            output[0] = i;
-		            output[1] = next_move[1];
-		         }
-	            
-			}
-		}
-		
-		return output;
-	}
-	
-	private int [] getMinMove(Board board, int depth){
-		int [] output = new int [2];
-		int score = board.getCurrentScore();
-		if(board.gameFinished() || depth <= 0){
-			output[0] = 0;
-			output[1] = score;
-			return output;
-		}
-		
-		output[0] = 0;
-		output[1] = 9999;
-		
-		
-		for(int i = 0; i < 7 ; i++){
-			Board b = new Board(board);
-			
-			if(b.addChip(1, i)){
-				int [] next_move = getMaxMove(b, depth - 1); // Recursive calling
+				if(isPlaying){
+					int [] next_move = minMax(b, !isPlaying, depth - 1, alpha,beta);
+					if (output[0] == -1 || next_move[1] > output[1]) {
+			            output[0] = i;
+			            output[1] = next_move[1];
+			            alpha = next_move[1];
+			         }
+				}else{
+					int [] next_move = minMax(b, !isPlaying, depth - 1, alpha,beta);
 
-	            // Evaluate new move
-				if (output[0] == 0 || next_move[1] < output[1]) {
-		            output[0] = i;
-		            output[1] = next_move[1];
-		         }
-	            
+					if (output[0] == -1 || next_move[1] < output[1]) {
+			            output[0] = i;
+			            output[1] = next_move[1];
+			            beta = next_move[1];
+			         }
+				}
 			}
+			if (alpha >= beta) break;
 		}
-		
 		return output;
 	}
 	

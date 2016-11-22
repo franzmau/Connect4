@@ -23,11 +23,17 @@ public class Game {
 		}
 	}
 	
+	public void preFillBoard(){
+		//this.board.addChip(1, 0);
+		//this.board.addChip(2, 3);
+	}
+	
 	public void StartGame(){
 		
 		playing = true;
 		this.board.initBoard();
-		
+		preFillBoard();
+		this.board.printBoard();
 		while(playing){
 			if(isPlayer1Turn){
 				System.out.println("P1");
@@ -38,7 +44,8 @@ public class Game {
 			}
 			isPlayer1Turn = !isPlayer1Turn;
 			board.printBoard();
-			if(this.board.gameFinished() ){
+			System.out.println("Score: " + this.board.getCurrentScore());
+			if(this.board.getCurrentScore() != 0 ){
 				this.playing = false;
 				System.out.println("YA alguien gano");
 			}
