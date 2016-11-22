@@ -152,8 +152,10 @@ public class Board {
 	        	
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
 	            	return player;
-	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
+	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3]){
+	            	System.out.println("entro");
 	            	return cpu;
+	            }
 	        	}
 	        }
 	        
@@ -163,14 +165,30 @@ public class Board {
 	        for(int j=0;j<length-1;j++){
 	        	int j3=j-3;
 	        	int i3= i+3;
-	        	
-	        	if(i3<wide-1 && j3 >0){
+	        	int ja3=j+3;
+	        	int ia3=i-3;
+	        	if(i3<wide-1 && j3 >0 ){
 	        	
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return player;
 	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return cpu;
+	            
+	          
+	            
 	        	}
+	        	
+	        	if(ia3>0 &&ja3<length-1){
+	        		  if(Board[i][j] == 1 && Board[i][j]==Board[i-1][j+1] && Board[i-1][j+1]==Board[i-2][j+2] && Board[i][j]==Board[i-3][j+3])
+	  	            	return player;
+	  	            else if(Board[i][j] == 2 && Board[i][j]==Board[i-1][j+1] && Board[i-1][j+1]==Board[i-2][j+2] && Board[i][j]==Board[i-3][j+3])
+	  	            	return cpu;
+	        		
+	        	}
+	        	
+	        	
+	        	
+	     
 	        } 	
 		}
 		return 0;
