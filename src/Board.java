@@ -164,6 +164,7 @@ public class Board {
 	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return cpu;
 	        	}
+	     
 	        } 	
 		}
 		return 0;
