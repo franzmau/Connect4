@@ -6,36 +6,41 @@ import numpy
 
 class Neuron_network(object):
 	def __init__(self, layers_sizes):
-	
+
 		# self
 		# layers_size: Number of neurons per layer, i.e. [2,2,2] 2 neurons for input, 2 for hidden layer, 2 for output
 		self.layers_sizes = layers_sizes
-		self.number_layers = len(layers_sizes) 
+		self.number_layers = len(layers_sizes)
 		self.biases = [numpy.random.randn(y, 1)for y in layers_sizes[1:]]
 		self.weights = [numpy.random.randn(y, x) for x, y in zip(layers_sizes[:-1], layers_sizes[1:])]
+	# Activation function's methods
+	def sigmoid_function(self, z):
+		return 1.0/(1.0 + numpy.exp(-z))
+	def sigmoid_prime(self, z):
+		return self.sigmoid_function(z) * (1 - self.sigmoid_function(z))
 	def cost_derivative(self, output_activations, y):
 		# returns the derivative of the cost function Cx
-		
+
 		# self
 		# output_activations: output activations vector for the tested sets
-		# y: 
-		
+		# y:
+
 		return (output_activations - y)
 	def calculate_output(self, a):
-	
+
 		# self
 		# a: input
-		
+
 		for bias, weight in zip(self.biases, self.weights):
 			a = sigmoid_function(numpy.dot(weight, a) + bias)
 		return a
 	def evaluate_outputs(self, test_data):
-		
+
 		# returns the evaluations of the test sets
-		
+
 		# self
 		# test_data: Sets of test set for testing the score of our network
-		
+
 		tests_outputs = [(numpy.argmax(self.calculate_output(x)), y) for (x, y) in test_data]
 		return sum(int(x == y) for (x, y) in tests_outputs)
 	def back_propagation(self, x, y):
@@ -47,19 +52,19 @@ class Neuron_network(object):
 		# Feeding forward process
 		activation = x
 		activations = [x]
-		z_vectors = [] 
+		z_vectors = []
 		for bias, weight in zip(self.biases, self.weights):
 			z = numpy.dot(weight, activation) + bias
 			z_vectors.append(z)
-			activation = sigmoid(z)
+			activation = self.sigmoid_prime(z)
 			activations.append(activation)
-			
+
 		# Backward process
-		
-		delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(z_vectors[-1])
+
+		delta = self.cost_derivative(activations[-1], y) * self.sigmoid_prime(z_vectors[-1])
 		new_biases[-1] = delta
 		new_weights[-1] = numpy.dot(delta, activations[-2].transpose())
-		
+
 		for reverse_layer in xrange(2, self.num_layers):
 			z = z_vectors[-reverse_layer]
 			sigmoid_p = sigmoid_prime(z)
@@ -70,7 +75,7 @@ class Neuron_network(object):
 	def update_batch(self, batch, learning_rate):
 		# self
 		# batch: batch for updating the biases and weights
-		# learning_rate 
+		# learning_rate
 		new_biases = [numpy.zeros(biases.shape) for biases in self.biases]
 		new_weights = [numpy.zeros(weights.shape)for weights in self.weights]
 		for x, y in batch:
@@ -86,7 +91,7 @@ class Neuron_network(object):
 		# batch_size: For not iterating over all the data a reduced number of groups is used
 		# learning_rate
 		# test_data: Complete set of test data for testing the network
-		if test_data: 
+		if test_data:
 			length_test = len(test_data)
 		length = len(training_data)
 		for i in xrange(epochs):
@@ -98,8 +103,3 @@ class Neuron_network(object):
 				print "Iteration {0}: {1} of {2}".format( i, self.evaluate(test_data), length_test)
 			else:
 				print "Iteration {0} complete".format(i)
-# Activation function's methods
-def sigmoid_function(z):
-	return 1.0/(1.0 + numpy.exp(-z))
-def sigmoid_prime(z):
-	return sigmoid_function(z) * (1 - sigmoid_function(z))
