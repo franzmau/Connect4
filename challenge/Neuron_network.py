@@ -32,7 +32,7 @@ class Neuron_network(object):
 		# a: input
 
 		for bias, weight in zip(self.biases, self.weights):
-			a = sigmoid_function(numpy.dot(weight, a) + bias)
+			a = self.sigmoid_function(numpy.dot(weight, a) + bias)
 		return a
 	def evaluate_outputs(self, test_data):
 
@@ -65,9 +65,9 @@ class Neuron_network(object):
 		new_biases[-1] = delta
 		new_weights[-1] = numpy.dot(delta, activations[-2].transpose())
 
-		for reverse_layer in xrange(2, self.num_layers):
+		for reverse_layer in xrange(2, self.number_layers):
 			z = z_vectors[-reverse_layer]
-			sigmoid_p = sigmoid_prime(z)
+			sigmoid_p = self.sigmoid_prime(z)
 			delta = numpy.dot(self.weights[1 - reverse_layer].transpose(), delta) * sigmoid_p
 			new_biases[-reverse_layer] = delta
 			new_weights[-reverse_layer] = numpy.dot(delta, activations[-1 - reverse_layer].transpose())
@@ -100,6 +100,6 @@ class Neuron_network(object):
 			for batch in batches:
 				self.update_batch(batch, learning_rate)
 			if test_data:
-				print "Iteration {0}: {1} of {2}".format( i, self.evaluate(test_data), length_test)
+				print "Iteration {0}: {1} of {2}".format( i, self.evaluate_outputs(test_data), length_test)
 			else:
 				print "Iteration {0} complete".format(i)
