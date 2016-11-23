@@ -1,7 +1,7 @@
 ##Libraries
 import random
 
-# Third-party libraries
+# Library for Algebra
 import numpy
 
 class Neuron_Network(object):
@@ -12,6 +12,7 @@ class Neuron_Network(object):
 		self.weights = [numpy.random.randn(y, x) for x, y in zip(layers_sizes[:-1], layers_sizes[1:])]
 
 	def back_pass(self, new_biases, new_weights, activations, output, z_vectors):
+		# Back propagation
 		delta = self.cost_derivative(activations[-1], output) * sigmoid_derivative(z_vectors[-1])
 		new_biases[-1] = delta
 		new_weights[-1] = numpy.dot(delta, activations[-2].transpose())
@@ -25,6 +26,7 @@ class Neuron_Network(object):
 		return (new_biases, new_weights)
 
 	def full_feed_forward(self, inputs):
+		# Feed forward but returning activations and a z vector
 		activation = inputs
 		activations = [inputs]
 		z_vectors = []
@@ -36,6 +38,7 @@ class Neuron_Network(object):
 		return (activations, z_vectors)
 
 	def back_propagation(self, inputs, output):
+		# Learning process
 		new_biases = [numpy.zeros(bias.shape) for bias in self.biases]
 		new_weights = [numpy.zeros(weight.shape) for weight in self.weights]
 		# Modified Feed Forward Propagation
@@ -59,6 +62,7 @@ class Neuron_Network(object):
 		self.biases = [bias - scaled_learning_rate) * new_bias for bias, new_bias in zip(self.biases, new_biases)]
 
 	def Stochastic_Gradient_Descent(self, training_data, epochs, subset_size, learning_rate, test_data = None):
+		# Main function
 		if test_data: 
 			test_length = len(test_data)
 		training_length = len(training_data)
@@ -87,6 +91,7 @@ class Neuron_Network(object):
 		return sum(int(x == y) for (x, y) in test_results)
 
 	def cost_derivative(self, output_activations, y):
+		# Function returning a vector of the cost derivatives of the activations
 		return (output_activations - y)
 		
 	def predict_digit(self, digit_data):
