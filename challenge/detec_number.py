@@ -2,9 +2,14 @@ import cv2
 import numpy as np;
 import pprint;
 import time
+import mnist_loader
+training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+import network
+net = network.Neuron_Network([784, 30, 10])
+net.Stochastic_Gradient_Descent(training_data, 1, 10, 3.0, test_data=test_data)
 
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 while True:
     x0 = 0
@@ -39,7 +44,12 @@ while True:
     if imageDetected:
         output = gray_img[y0:y1,x0:x1]
         resized_image = cv2.resize(output, (28, 28))
+        cv2.imshow('output', output)
         cv2.imshow('NUMBER', resized_image)
         output = np.reshape(resized_image, (784, 1))
+        output = output / 255;
+        number = net.predict_digit(output);
+        print('Number = ' + str(number));
+        time.sleep(5);
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

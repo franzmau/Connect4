@@ -1,92 +1,84 @@
-#### Libraries
-# Standard library
+##Libraries
 import random
 
 # Third-party libraries
-import numpy as np
+import numpy
 
-class Network(object):
+class Neuron_Network(object):
 
-    def __init__(self, sizes):
-        self.num_layers = len(sizes)
-        self.sizes = sizes
-        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
-        self.weights = [np.random.randn(y, x)
-                        for x, y in zip(sizes[:-1], sizes[1:])]
+    def __init__(self, layers_sizes):
+        self.number_layers = len(layers_sizes)
+        self.layers_sizes = layers_sizes
+        self.biases = [numpy.random.randn(y, 1) for y in layers_sizes[1:]]
+        self.weights = [numpy.random.randn(y, x) for x, y in zip(layers_sizes[:-1], layers_sizes[1:])]
 
     def feedforward(self, a):
-        for b, w in zip(self.biases, self.weights):
-            a = sigmoid(np.dot(w, a)+b)
+        for bias, weight in zip(self.biases, self.weights):
+            a = sigmoid(numpy.dot(weight, a) + bias)
         return a
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):
-        if test_data: n_test = len(test_data)
+    def Stochastic_Gradient_Descent(self, training_data, epochs, batch_size, learning_rate, test_data = None):
+        if test_data:
+            test_length = len(test_data)
         n = len(training_data)
-        for j in xrange(epochs):
+        for cur_iter in xrange(epochs):
             random.shuffle(training_data)
-            mini_batches = [
-                training_data[k:k+mini_batch_size]
-                for k in xrange(0, n, mini_batch_size)]
-            for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+            batches = [training_data[k:k+batch_size] for k in xrange(0, n, batch_size)]
+            for batch in batches:
+                self.update_batch(batch, learning_rate)
             if test_data:
-                print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)
+                print "Iteration {0}: {1} of {2}".format(cur_iter, self.evaluate(test_data), test_length)
             else:
-                print "Epoch {0} complete".format(j)
+                print "Iteration {0} complete".format(cur_iter)
 
-    def update_mini_batch(self, mini_batch, eta):
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
-            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]
+    def update_batch(self, batch, learning_rate):
+        new_biases = [numpy.zeros(bias.shape) for bias in self.biases]
+        new_weights = [numpy.zeros(weight.shape) for weight in self.weights]
+        for x, y in batch:
+            delta_new_biases, delta_new_weights = self.back_propagation(x, y)
+            new_biases = [new_bias + delta_bias for new_bias, delta_bias in zip(new_biases, delta_new_biases)]
+            new_weights = [new_weight + delta_weight for new_weight, delta_weight in zip(new_weights, delta_new_weights)]
+        self.weights = [weight - (learning_rate / len(batch)) * new_weight for weight, new_weight in zip(self.weights, new_weights)]
+        self.biases = [bias - (learning_rate / len(batch)) * new_bias for bias, new_bias in zip(self.biases, new_biases)]
 
-    def backprop(self, x, y):
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        # feedforward
+    def back_propagation(self, x, y):
+        new_biases = [numpy.zeros(bias.shape) for bias in self.biases]
+        new_weights = [numpy.zeros(weight.shape) for weight in self.weights]
+        # Feed Forward Propagation
         activation = x
-        activations = [x] # list to store all the activations, layer by layer
-        zs = [] # list to store all the z vectors, layer by layer
-        for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
-            zs.append(z)
+        activations = [x]
+        z_vectors = []
+        for bias, weight in zip(self.biases, self.weights):
+            z = numpy.dot(weight, activation) + bias
+            z_vectors.append(z)
             activation = sigmoid(z)
             activations.append(activation)
-        # backward pass
-        delta = self.cost_derivative(activations[-1], y) * \
-            sigmoid_prime(zs[-1])
-        nabla_b[-1] = delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
+        # Backward Propagation
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(z_vectors[-1])
+        new_biases[-1] = delta
+        new_weights[-1] = numpy.dot(delta, activations[-2].transpose())
 
-        for l in xrange(2, self.num_layers):
-            z = zs[-l]
-            sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
-            nabla_b[-l] = delta
-            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
-        return (nabla_b, nabla_w)
+        for reverse_layer in xrange(2, self.number_layers):
+            z = z_vectors[-reverse_layer]
+            prime_sigmoid = sigmoid_prime(z)
+            delta = numpy.dot(self.weights[1 - reverse_layer].transpose(), delta) * prime_sigmoid
+            new_biases[-reverse_layer] = delta
+            new_weights[-reverse_layer] = numpy.dot(delta, activations[-reverse_layer - 1].transpose())
+        return (new_biases, new_weights)
 
     def evaluate(self, test_data):
-        test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]
+        test_results = [(numpy.argmax(self.feedforward(x)), y) for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
+
+    def predict_digit(self, digit_data):
+        return (numpy.argmax(self.feedforward(digit_data)))
 
     def cost_derivative(self, output_activations, y):
         return (output_activations-y)
 
-#### Miscellaneous functions
+##General Purpose
 def sigmoid(z):
-    """The sigmoid function."""
-    return 1.0/(1.0+np.exp(-z))
+    return 1.0/(1.0+numpy.exp(-z))
 
 def sigmoid_prime(z):
-    """Derivative of the sigmoid function."""
-return sigmoid(z)*(1-sigmoid(z))
+    return sigmoid(z)*(1-sigmoid(z))
