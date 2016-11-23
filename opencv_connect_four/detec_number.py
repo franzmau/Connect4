@@ -38,7 +38,8 @@ while True:
 
     if imageDetected:
         output = gray_img[y0:y1,x0:x1]
-        resized_image = cv2.resize(output, (26, 26))
+        resized_image = cv2.resize(output, (28, 28))
         cv2.imshow('NUMBER', resized_image)
+        output = np.reshape(resized_image, (784, 1))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
