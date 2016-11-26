@@ -103,7 +103,7 @@ public class Board {
 				auxP=0;
 			}
 			if(auxC==4){
-				System.out.println("gano cpu en ");
+				
 				return cpu;
 			}
 			if(auxP==4){
@@ -153,7 +153,7 @@ public class Board {
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3])
 	            	return player;
 	            else if(Board[i][j] == 2 && Board[i][j]==Board[i+1][j+1] && Board[i][j]==Board[i+2][j+2] && Board[i][j]==Board[i+3][j+3]){
-	            	System.out.println("entro");
+	            	
 	            	return cpu;
 	            }
 	        	}
@@ -167,7 +167,7 @@ public class Board {
 	        	int i3= i+3;
 	        	int ja3=j+3;
 	        	int ia3=i-3;
-	        	if(i3<wide-1 && j3 >0 ){
+	        	if(i3<wide-1 && j3 >0){
 	        	
 	            if(Board[i][j] == 1 && Board[i][j]==Board[i+1][j-1] && Board[i][j]==Board[i+2][j-2] && Board[i][j]==Board[i+3][j-3])
 	            	return player;
