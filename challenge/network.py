@@ -20,8 +20,9 @@ class Neuron_Network(object):
 		for reverse_layer in xrange(2, len(self.layers_sizes)):
 			z = z_vectors[-reverse_layer]
 			delta = numpy.dot(self.weights[1 - reverse_layer].transpose(), delta) * sigmoid_derivative(z)
-			new_weights[-reverse_layer] = numpy.dot(delta, activations[-1 - reverse_layer].transpose())
 			new_biases[-reverse_layer] = delta
+			new_weights[-reverse_layer] = numpy.dot(delta, activations[-1 - reverse_layer].transpose())
+			
 		return (new_biases, new_weights)
 
 	def full_feed_forward(self, inputs):
@@ -57,8 +58,8 @@ class Neuron_Network(object):
 			new_biases = [new_bias + delta_bias for new_bias, delta_bias in tuple_biases]
 			new_weights = [new_weight + delta_weight for new_weight, delta_weight in tuple_weights]
 		scaled_learning_rate = learning_rate / len(subset)
-		self.weights = [weight - scaled_learning_rate) * new_weight for weight, new_weight in zip(self.weights, new_weights)]
-		self.biases = [bias - scaled_learning_rate) * new_bias for bias, new_bias in zip(self.biases, new_biases)]
+		self.weights = [weight - scaled_learning_rate * new_weight for weight, new_weight in zip(self.weights, new_weights)]
+		self.biases = [bias - scaled_learning_rate * new_bias for bias, new_bias in zip(self.biases, new_biases)]
 
 	def Stochastic_Gradient_Descent(self, training_data, epochs, subset_size, learning_rate, test_data = None):
 		# Main function
