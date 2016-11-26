@@ -97,11 +97,11 @@ public class Game {
 			System.out.println("Score: " + this.board.getCurrentScore());
 			if(this.board.getCurrentScore() != 0 ){
 				this.playing = false;
-				System.out.println("YA alguien gano");
+				
 			}
 			if( Math.abs(this.board.getCurrentScore()) >= (100)){
 				this.playing = false;
-				System.out.println("score ya es mayor a 100");
+				
 			}
 
 			board.printBoard();
