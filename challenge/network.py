@@ -11,7 +11,7 @@ class Neuron_Network(object):
 		self.biases = [numpy.random.randn(y, 1) for y in layers_sizes[1:]]
 		self.weights = [numpy.random.randn(y, x) for x, y in zip(layers_sizes[:-1], layers_sizes[1:])]
 
-	def back_pass(self, new_biases, new_weights, activations, output, z_vectors):
+	def backpropagate_error(self, new_biases, new_weights, activations, output, z_vectors):
 		# Back propagation
 		delta = self.cost_derivative(activations[-1], output) * sigmoid_derivative(z_vectors[-1])
 		new_biases[-1] = delta
@@ -19,10 +19,9 @@ class Neuron_Network(object):
 		
 		for reverse_layer in xrange(2, len(self.layers_sizes)):
 			z = z_vectors[-reverse_layer]
-			prime_sigmoid = sigmoid_derivative(z)
-			delta = numpy.dot(self.weights[1 - reverse_layer].transpose(), delta) * prime_sigmoid
+			delta = numpy.dot(self.weights[1 - reverse_layer].transpose(), delta) * sigmoid_derivative(z)
+			new_weights[-reverse_layer] = numpy.dot(delta, activations[-1 - reverse_layer].transpose())
 			new_biases[-reverse_layer] = delta
-			new_weights[-reverse_layer] = numpy.dot(delta, activations[-reverse_layer - 1].transpose())
 		return (new_biases, new_weights)
 
 	def full_feed_forward(self, inputs):
@@ -43,8 +42,8 @@ class Neuron_Network(object):
 		new_weights = [numpy.zeros(weight.shape) for weight in self.weights]
 		# Modified Feed Forward Propagation
 		activations, z_vectors = self.full_feed_forward(inputs)
-		# Backward Pass
-		new_biases, new_weights = self.back_pass(new_biases, new_weights, activations, output, z_vectors)
+		# Backpropagate error
+		new_biases, new_weights = self.backpropagate_error(new_biases, new_weights, activations, output, z_vectors)
 		return (new_biases, new_weights)
 
 	def update_subset(self, subset, learning_rate):
